@@ -1,8 +1,8 @@
 ---
-title: Enabling HTTPS for InfluxDB Enterprise
+title: Enable HTTPS for InfluxDB Enterprise
 menu:
   enterprise_influxdb_1_7:
-    name: Enabling HTTPS
+    name: Enable HTTPS
     weight: 100
     parent: Guides
 ---
@@ -17,7 +17,7 @@ InfluxData **strongly recommends** enabling HTTPS, especially if you plan on sen
 
 ## Requirements
 
-To enable HTTPS with InfluxDB Enterprise, you need a Transport Layer Security (TLS) certificate -- also known as a Secured Sockets Layer (SSL) certificate.
+To enable HTTPS with InfluxDB Enterprise, you need a Transport Layer Security (TLS) certificate (also known as a Secured Sockets Layer (SSL) certificate).
 InfluxDB supports three types of TLS certificates:
 
 * **Single domain certificates signed by a [Certificate Authority](https://en.wikipedia.org/wiki/Certificate_authority)**
@@ -42,9 +42,9 @@ Regardless of your certificate's type, InfluxDB Enterprise supports certificates
 a private key file (`.key`) and a signed certificate file (`.crt`) file pair, as well as certificates
 that combine the private key file and the signed certificate file into a single bundled file (`.pem`).
 
-The following two sections outline how to set up HTTPS with InfluxDB Enterprise [using a CA-signed
-certificate](#setup-https-with-a-ca-signed-certificate) and [using a self-signed certificate](#setup-https-with-a-self-signed-certificate)
-on Ubuntu 16.04.
+The following two sections outline how to set up HTTPS with InfluxDB Enterprise
+[using a CA-signed certificate](#setup-https-with-a-ca-signed-certificate) and
+[using a self-signed certificate](#setup-https-with-a-self-signed-certificate) on Ubuntu 16.04.
 Specific steps may be different for other operating systems.
 
 ## Setup HTTPS with a CA-Signed Certificate
@@ -91,7 +91,8 @@ Enable HTTPS for each Meta Node within the `[meta]` section of the configuration
 
 #### Step 4: Enable HTTPS within the configuration file for each Data Node
 
-HTTPS is disabled by default. There are two sets of configuration changes required.
+HTTPS is disabled by default.
+There are two sets of configuration changes required.
 
 First, enable HTTPS for each Data Node within the `[http]` section of the configuration file (`/etc/influxdb/influxdb.conf`) by setting:
 
@@ -145,9 +146,10 @@ Verify that HTTPS is working on the meta nodes by using `influxd-ctl`.
 ```
 influxd-ctl -bind-tls show
 ```
-<dt>
-   Once you have enabled HTTPS, you MUST use `-bind-tls` in order for influxd-ctl to connect to the meta node.
-</dt>
+
+{{% warn %}}
+Once you have enabled HTTPS, you Must use `-bind-tls` in order for influxd-ctl to connect to the meta node.
+{{% /warn %}}
 
 A successful connection returns output which should resemble the following:
 ```
@@ -228,7 +230,8 @@ Enable HTTPS for each Meta Node within the `[meta]` section of the configuration
 
 #### Step 3: Enable HTTPS within the configuration file for each Data Node
 
-HTTPS is disabled by default.  There are two sets of configuration changes required.
+HTTPS is disabled by default.
+ There are two sets of configuration changes required.
 
 First, enable HTTPS for each Data Node within the `[http]` section of the configuration file (`/etc/influxdb/influxdb.conf`) by setting:
 
@@ -287,7 +290,9 @@ Verify that HTTPS is working on the meta nodes by using `influxd-ctl`.
 influxd-ctl -bind-tls -k show
 ```
 <dt>
-   Once you have enabled HTTPS, you MUST use `-bind-tls` in order for influxd-ctl to connect to the meta node.  Because the cert is self-signed, you MUST also use the `-k` option.  This skips certificate verification.
+   Once you have enabled HTTPS, you MUST use `-bind-tls` in order for influxd-ctl to connect to the meta node.
+ Because the cert is self-signed, you MUST also use the `-k` option.
+ This skips certificate verification.
 </dt>
 
 A successful connection returns output which should resemble the following:
@@ -329,7 +334,8 @@ In Telegraf's configuration file (`/etc/telegraf/telegraf.conf`), under the OUTP
 setting to indicate `https` instead of `http` and change `localhost` to the
 relevant domain name.
 >
-The best practice in terms of security is to transfer the cert to the client and make it trusted (e.g. by putting in OS cert repo or using `ssl_ca` option).  The alternative is to sign the cert using an internal CA and then trust the CA cert.
+The best practice in terms of security is to transfer the cert to the client and make it trusted (e.g. by putting in OS cert repo or using `ssl_ca` option).
+The alternative is to sign the cert using an internal CA and then trust the CA cert.
 
 If you're using a self-signed certificate, uncomment the `insecure_skip_verify`
 setting and set it to `true`.
