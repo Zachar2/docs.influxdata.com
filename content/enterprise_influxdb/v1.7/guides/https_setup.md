@@ -7,21 +7,18 @@ menu:
     parent: Guides
 ---
 
-This guide describes how to enable HTTPS with InfluxDB Enterprise.
-Setting up HTTPS secures the communication between clients and the InfluxDB Enterprise
-server,
-and, in some cases, HTTPS verifies the authenticity of the InfluxDB Enterprise server to
-clients.
+Enabling HTTPS encrypts the communication between clients and the InfluxDB Enterprise server.
+<!-- This includes communication betwee nodes in the cluster. -->
+When configured with a signed certificate, HTTPS can also verify the authenticity of the InfluxDB Enterprise server to connecting clients.
 
-If you plan on sending requests to InfluxDB Enterprise over a network, we
-[strongly recommend](/enterprise_influxdb/v1.7/administration/security/)
-that you set up HTTPS.
+{{% warn %}}
+InfluxData **strongly recommends** enabling HTTPS, especially if you plan on sending requests to InfluxDB Enterprise over a network.
+{{% /warn %}}
 
 ## Requirements
 
-To set up HTTPS with InfluxDB Enterprise, you'll need an existing or new InfluxDB Enterprise instance
-and a Transport Layer Security (TLS) certificate (also known as a Secured Sockets Layer (SSL) certificate).
-InfluxDB Enterprise supports three types of TLS/SSL certificates:
+To enable HTTPS with InfluxDB Enterprise, you need a Transport Layer Security (TLS) certificate -- also known as a Secured Sockets Layer (SSL) certificate.
+InfluxDB supports three types of TLS certificates:
 
 * **Single domain certificates signed by a [Certificate Authority](https://en.wikipedia.org/wiki/Certificate_authority)**
 
@@ -168,7 +165,6 @@ enterprise-meta-02:8091   1.x.y-c1.x.z
 enterprise-meta-03:8091   1.x.y-c1.x.z
 ```
 
-
 Next, verify that HTTPS is working by connecting to InfluxDB Enterprise with the [CLI tool](/influxdb/v1.7/tools/shell/):
 ```
 influx -ssl -host <domain_name>.com
@@ -209,7 +205,6 @@ Enable HTTPS for each Meta Node within the `[meta]` section of the configuration
 * `https-certificate` to `/etc/ssl/influxdb-selfsigned.crt`
 * `https-private-key` to `/etc/ssl/influxdb-selfsigned.key`
 * `https-insecure-tls` to `true` to indicate a self-signed key
-
 
 ```
 [meta]
@@ -311,7 +306,6 @@ enterprise-meta-02:8091   1.x.y-c1.x.z
 enterprise-meta-03:8091   1.x.y-c1.x.z
 ```
 
-
 Next, verify that HTTPS is working by connecting to InfluxDB Enterprise with the [CLI tool](/influxdb/latest/tools/shell/):
 ```
 influx -ssl -unsafeSsl -host <domain_name>.com
@@ -326,7 +320,6 @@ InfluxDB shell version: 1.x.y
 
 That's it! You've successfully set up HTTPS with InfluxDB Enterprise.
 
-
 ## Connect Telegraf to a secured InfluxDB Enterprise instance
 
 Connecting [Telegraf](/telegraf/latest/) to an InfluxDB Enterprise instance that's using
@@ -337,7 +330,6 @@ setting to indicate `https` instead of `http` and change `localhost` to the
 relevant domain name.
 >
 The best practice in terms of security is to transfer the cert to the client and make it trusted (e.g. by putting in OS cert repo or using `ssl_ca` option).  The alternative is to sign the cert using an internal CA and then trust the CA cert.
-
 
 If you're using a self-signed certificate, uncomment the `insecure_skip_verify`
 setting and set it to `true`.
