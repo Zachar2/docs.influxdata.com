@@ -56,16 +56,16 @@ Specific steps may be different for other operating systems.
 
 2. **Ensure file permissions for each Data Node**
 
-   Certificate files require read and write access by the `root` user.
-   Ensure that you have the correct file permissions in each Data Node by running the following
-   commands:
+    Certificate files require read and write access by the `root` user.
+    Ensure that you have the correct file permissions in each Data Node by running the following commands:
 
     ```
     sudo chown root:root /etc/ssl/<CA-certificate-file>
     sudo chmod 644 /etc/ssl/<CA-certificate-file>
     sudo chmod 600 /etc/ssl/<private-key-file>
     ```
-3. **Enable HTTPS within the configuration file for each Meta Node**
+
+3. **Enable HTTPS for each Meta Node**
 
     HTTPS is disabled by default.
     Enable HTTPS for each Meta Node within the `[meta]` section of the configuration file (`/etc/influxdb/influxdb-meta.conf`) by setting:
@@ -90,53 +90,55 @@ Specific steps may be different for other operating systems.
     https-private-key = "<bundled-certificate-file>.pem"
     ```
 
-4. **Enable HTTPS within the configuration file for each Data Node**
+4. **Enable HTTPS for each Data Node**
 
     HTTPS is disabled by default.
     There are two sets of configuration changes required.
 
-    First, enable HTTPS for each Data Node within the `[http]` section of the configuration file (`/etc/influxdb/influxdb.conf`) by setting:
+    1. First, enable HTTPS for each Data Node within the `[http]` section of the configuration file (`/etc/influxdb/influxdb.conf`) by setting:
 
-    * `https-enabled` to `true`
-    * `http-certificate` to `/etc/ssl/<signed-certificate-file>.crt` (or to `/etc/ssl/<bundled-certificate-file>.pem`)
-    * `http-private-key` to `/etc/ssl/<private-key-file>.key` (or to `/etc/ssl/<bundled-certificate-file>.pem`)
+        * `https-enabled` to `true`
+        * `http-certificate` to `/etc/ssl/<signed-certificate-file>.crt` (or to `/etc/ssl/<bundled-certificate-file>.pem`)
+        * `http-private-key` to `/etc/ssl/<private-key-file>.key` (or to `/etc/ssl/<bundled-certificate-file>.pem`)
 
-    ```
-    [http]
+        ```
+        [http]
 
-    [...]
+        [...]
 
-    # Determines whether HTTPS is enabled.
-    https-enabled = true
+        # Determines whether HTTPS is enabled.
+        https-enabled = true
 
-    [...]
+        [...]
 
-    # The SSL certificate to use when HTTPS is enabled.
-    https-certificate = "<bundled-certificate-file>.pem"
+        # The SSL certificate to use when HTTPS is enabled.
+        https-certificate = "<bundled-certificate-file>.pem"
 
-    # Use a separate private key location.
-    https-private-key = "<bundled-certificate-file>.pem"
-    ```
+        # Use a separate private key location.
+        https-private-key = "<bundled-certificate-file>.pem"
+        ```
 
-    Second, Configure the Data Nodes to use HTTPS when communicating with the Meta Nodes  within the `[meta]` section of the configuration file (`/etc/influxdb/influxdb.conf`) by setting:
+    2. Second, configure the Data Nodes to use HTTPS when communicating with the Meta Nodes within the `[meta]` section of the configuration file (`/etc/influxdb/influxdb.conf`) by setting:
 
-    * `meta-tls-enabled` to `true`
+        * `meta-tls-enabled` to `true`
 
-    ```
-    [meta]
+        ```
+        [meta]
 
-    [...]
-    meta-tls-enabled = true
-    ```
+        [...]
+        meta-tls-enabled = true
+        ```
 
 5. **Restart InfluxDB Enterprise**
 
     Restart the InfluxDB Enterprise meta node processes for the configuration changes to take effect:
+
     ```
     sudo systemctl start influxdb-meta
     ```
 
     Restart the InfluxDB Enterprise data node processes for the configuration changes to take effect:
+
     ```
     sudo systemctl restart influxdb
     ```
@@ -144,6 +146,7 @@ Specific steps may be different for other operating systems.
 6. **Verify the HTTPS Setup**
 
     Verify that HTTPS is working on the meta nodes by using `influxd-ctl`.
+
     ```
     influxd-ctl -bind-tls show
     ```
@@ -153,6 +156,7 @@ Specific steps may be different for other operating systems.
     </dt>
 
     A successful connection returns output which should resemble the following:
+
     ```
     Data Nodes
     ==========
@@ -169,11 +173,13 @@ Specific steps may be different for other operating systems.
     ```
 
     Next, verify that HTTPS is working by connecting to InfluxDB Enterprise with the [CLI tool](/influxdb/v1.7/tools/shell/):
+
     ```
     influx -ssl -host <domain_name>.com
     ```
 
     A successful connection returns the following:
+
     ```
     Connected to https://<domain_name>.com:8086 version 1.x.y
     InfluxDB shell version: 1.x.y
