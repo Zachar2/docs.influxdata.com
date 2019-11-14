@@ -153,7 +153,7 @@ Specific steps may be different for other operating systems.
     ```
 
     <dt>
-    Once you have enabled HTTPS, you must use `-bind-tls` in order for influxd-ctl to connect to the meta node.
+    Once you have enabled HTTPS, you must use `-bind-tls` in order for `influxd-ctl` to connect to the meta node.
     </dt>
 
     A successful connection returns output which should resemble the following:
@@ -302,9 +302,8 @@ That's it! You've successfully set up HTTPS with InfluxDB Enterprise.
     ```
 
     <dt>
-    Once you have enabled HTTPS, you must use `-bind-tls` in order for influxd-ctl to connect to the meta node.
-    Because the cert is self-signed, you MUST also use the `-k` option.
-    This skips certificate verification.
+    Once you have enabled HTTPS, you must use `-bind-tls` in order for `influxd-ctl` to connect to the meta node.
+    Because the certificate is self-signed, you must also use the `-k` option to skip certificate verification.
     </dt>
 
     A successful connection returns output which should resemble the following:
