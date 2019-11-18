@@ -209,6 +209,8 @@ That's it! You've successfully set up HTTPS with InfluxDB Enterprise.
     When you execute the command, it will prompt you for more information.
     You can choose to fill out that information or leave it blank; both actions generate valid certificate files.
 
+    In subsequent steps, you will need to copy the certificate to each node in the cluster.
+
 2. **Enable HTTPS within the configuration file for each Meta Node**
 
     HTTPS is disabled by default.
